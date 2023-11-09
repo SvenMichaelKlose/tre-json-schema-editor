@@ -29,10 +29,11 @@
 
 (fn json-schema (props)
   (!= (json-schema-type-props props.schema)
-    (case !.type
-      "object"    ($$ `(json-schema-object :schema ,!))
-      "string"    ($$ `(json-schema-string :schema ,!))
-      (error "Unknown type ~A" !.type))))
+    ($$ `(,(case !.type
+             "object"  'json-schema-object
+             "string"  'json-schema-string
+             (error "Unknown type ~A" !.type))
+          :schema ,!))))
 
 (declare-lml-component json-schema)
 
