@@ -6,17 +6,24 @@
 
 (defclass (json-schema-object lml-component) (init-props)
   (super init-props)
+  (replace-state props)
   this)
 
+(defmethod json-schema-object add (e)
+  (!= state
+    (= (ref !.schema.properties e.target.value) "string")
+    (replace-state !)))
+
 (defmethod json-schema-object render ()
-  (!= props.schema
+  (!= state.schema
     ($$ `(div
            (h1 ,!.title)
            ,@(maphash #'((k v)
                           `(div
                              ,(+ k ":")
                              (json-schema :schema ,v)))
-                      !.properties)))))
+                      !.properties)
+           (input :type "text" :on-change ,[add _])))))
 
 (finalize-class json-schema-object)
 (declare-lml-component json-schema-object)
