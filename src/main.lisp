@@ -4,15 +4,21 @@
 (declare-lml-component json-schema-string)
 
 
-(fn json-schema-object (props)
+(defclass (json-schema-object lml-component) (init-props)
+  (super init-props)
+  this)
+
+(defmethod json-schema-object render ()
   (!= props.schema
     ($$ `(div
            (h1 ,!.title)
            ,@(maphash #'((k v)
-                          `(div ,(+ k ":")
-                                (json-schema :schema ,v)))
+                          `(div
+                             ,(+ k ":")
+                             (json-schema :schema ,v)))
                       !.properties)))))
 
+(finalize-class json-schema-object)
 (declare-lml-component json-schema-object)
 
 
@@ -24,8 +30,8 @@
 (fn json-schema (props)
   (!= (json-schema-type-props props.schema)
     (case !.type
-      "object"    (json-schema-object props)
-      "string"    (json-schema-string props)
+      "object"    ($$ `(json-schema-object :schema ,!))
+      "string"    ($$ `(json-schema-string :schema ,!))
       (error "Unknown type ~A" !.type))))
 
 (declare-lml-component json-schema)
