@@ -1,5 +1,11 @@
+(fn json-schema-title (schema)
+  (!? schema.title
+      (+ "(" ! ")")
+      "(no title)"))
+
 (fn json-schema-string (props)
-  ($$ `(div "string")))
+  (!= props.schema
+    ($$ `(div ,(+ !.type " " (json-schema-title !))))))
 
 (declare-lml-component json-schema-string)
 
@@ -11,13 +17,13 @@
 
 (defmethod json-schema-object add (e)
   (!= ($? "<.json-add" e.target)
-    (= (ref state.schema.properties (dump ($? "input" !).value)) ($? "select" !).value)
+    (= (ref state.schema.properties ($? "input" !).value) ($? "select" !).value)
     (replace-state state)))
 
 (defmethod json-schema-object render ()
   (!= state.schema
     ($$ `(table
-           (tr (th :class "json-schema-typename" :colspan 2 ,(+ "object " !.title)))
+           (tr (th :class "json-schema-typename" :colspan 2 ,(json-schema-title !)))
            ,@(maphash #'((k v)  ; TODO: Enable @ to process hash tables and objects.
                           `(tr
                              (td ,(+ k ":"))
