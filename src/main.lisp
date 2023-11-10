@@ -11,19 +11,22 @@
 
 (defmethod json-schema-object add (e)
   (!= state
-    (= (ref !.schema.properties e.target.value) "string")
+    (= (ref !.schema.properties e.target.value) ($? "select" ($? "<div" e.target)).value)
     (replace-state !)))
 
 (defmethod json-schema-object render ()
   (!= state.schema
-    ($$ `(div
+    ($$ `(div :class "json-schema-object"
+           (div :class "json-schema-typename" "object")
            (h1 ,!.title)
-           ,@(maphash #'((k v)
+           ,@(maphash #'((k v)  ; TODO: Enable @ to process hash tables and objects.
                           `(div
-                             ,(+ k ":")
-                             (json-schema :schema ,v)))
+                             ,(+ k ":") (json-schema :schema ,v)))
                       !.properties)
-           (input :type "text" :on-change ,[add _])))))
+           (input :type "text" :on-change ,[add _])
+           (select
+             ,@(@ [`(option :value ,_ ,_)]
+                  '("string" "object")))))))
 
 (finalize-class json-schema-object)
 (declare-lml-component json-schema-object)
