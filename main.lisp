@@ -1,13 +1,15 @@
+(const *json-schema-basic-types* '("string" "object" "number" "array" "boolean"))
+
 (fn json-schema-title (schema)
   (!? schema.title
       (+ "(" ! ")")
       "(no title)"))
 
-(fn json-schema-string (props)
+(fn json-schema-type (props)
   (!= props.schema
     ($$ `(div ,(+ !.type " " (json-schema-title !))))))
 
-(declare-lml-component json-schema-string)
+(declare-lml-component json-schema-type)
 
 
 (defclass (json-schema-object lml-component) (init-props)
@@ -33,7 +35,7 @@
              (td (input :type "text"))
              (td
                (select ,@(@ [`(option :value ,_ ,_)]
-                            '("string" "object")))
+                            *json-schema-basic-types*))
                (button "+" :on-click ,[add _])))))))
 
 (finalize-class json-schema-object)
@@ -47,10 +49,9 @@
 
 (fn json-schema (props)
   (!= (json-schema-type-props props.schema)
-    ($$ `(,(case !.type
-             "object"  'json-schema-object
-             "string"  'json-schema-string
-             (error "Unknown type ~A" !.type))
+    ($$ `(,(? (string== "object" !.type)
+             'json-schema-object
+             'json-schema-type)
           :schema ,!))))
 
 (declare-lml-component json-schema)
@@ -64,6 +65,9 @@
         "surname"  {
             "type"  "string"
         }
+        "age"       "number"
+        "is_member" "boolean"
+        "guests"    "array"
     }
 })
 
