@@ -1,0 +1,17 @@
+body {
+    font-family: sans-serif;
+}
+
+h1 {
+    margin-top: 8px;
+    font-size: 20px;
+}
+
+.json-schema-object {
+    padding: 20px;
+    border: 1px solid black;
+}
+
+.json-schema-type-name {
+    font-weight: bold;
+}

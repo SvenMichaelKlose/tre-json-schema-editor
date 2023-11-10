@@ -3,6 +3,8 @@
 (make-js-project
   :title    "JSON Schema editor"
   :outfile  "www/index.html"
+  :internal-stylesheet
+    (fetch-file "src/style.css")
   :files
     '("src/main.lisp"))
 (quit)
