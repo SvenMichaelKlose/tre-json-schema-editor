@@ -7,6 +7,18 @@ h1 {
     font-size: 20px;
 }
 
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+}
+
+th {
+    background: lightgreen;
+}
+
 .json-schema-object {
     padding: 20px;
     border: 1px solid black;

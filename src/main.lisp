@@ -16,17 +16,17 @@
 
 (defmethod json-schema-object render ()
   (!= state.schema
-    ($$ `(div :class "json-schema-object"
-           (div :class "json-schema-typename" "object")
-           (h1 ,!.title)
+    ($$ `(table :class "json-schema-object"
+           (tr (th :class "json-schema-typename" :colspan 2 ,(+ "object " !.title)))
            ,@(maphash #'((k v)  ; TODO: Enable @ to process hash tables and objects.
-                          `(div
-                             ,(+ k ":") (json-schema :schema ,v)))
+                          `(tr
+                             (td ,(+ k ":"))
+                             (td (json-schema :schema ,v))))
                       !.properties)
-           (input :type "text" :on-change ,[add _])
-           (select
-             ,@(@ [`(option :value ,_ ,_)]
-                  '("string" "object")))))))
+           (tr
+             (td (input :type "text" :on-change ,[add _]))
+             (td (select ,@(@ [`(option :value ,_ ,_)]
+                              '("string" "object")))))))))
 
 (finalize-class json-schema-object)
 (declare-lml-component json-schema-object)
