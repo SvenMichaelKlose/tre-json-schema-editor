@@ -11,7 +11,7 @@ See also:
 
 # Starting it up
 
-You need tré and docker-compose installed.  The do
+You need tré and docker-compose installed.  Then do
 
 ~~~sh
 sudo docker-compose up -d
