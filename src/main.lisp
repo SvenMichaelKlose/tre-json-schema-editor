@@ -10,23 +10,25 @@
   this)
 
 (defmethod json-schema-object add (e)
-  (!= state
-    (= (ref !.schema.properties e.target.value) ($? "select" ($? "<div" e.target)).value)
-    (replace-state !)))
+  (!= ($? "<.json-add" e.target)
+    (= (ref state.schema.properties (dump ($? "input" !).value)) ($? "select" !).value)
+    (replace-state state)))
 
 (defmethod json-schema-object render ()
   (!= state.schema
-    ($$ `(table :class "json-schema-object"
+    ($$ `(table
            (tr (th :class "json-schema-typename" :colspan 2 ,(+ "object " !.title)))
            ,@(maphash #'((k v)  ; TODO: Enable @ to process hash tables and objects.
                           `(tr
                              (td ,(+ k ":"))
                              (td (json-schema :schema ,v))))
                       !.properties)
-           (tr
-             (td (input :type "text" :on-change ,[add _]))
-             (td (select ,@(@ [`(option :value ,_ ,_)]
-                              '("string" "object")))))))))
+           (tr :class "json-add"
+             (td (input :type "text"))
+             (td
+               (select ,@(@ [`(option :value ,_ ,_)]
+                            '("string" "object")))
+               (button "+" :on-click ,[add _])))))))
 
 (finalize-class json-schema-object)
 (declare-lml-component json-schema-object)
