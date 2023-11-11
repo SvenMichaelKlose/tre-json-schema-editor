@@ -5,16 +5,16 @@
       (+ "(" ! ")")
       "(no title)"))
 
-(fn json-schema-type (props)
-  (!= props.schema
+(fn json-schema-type (attrs)
+  (!= attrs.schema
     ($$ `(div ,(+ !.type " " (json-schema-title !))))))
 
 (declare-lml-component json-schema-type)
 
 
-(defclass (json-schema-object lml-component) (init-props)
-  (super init-props)
-  (replace-state props)
+(defclass (json-schema-object lml-component) (init-attrs)
+  (super init-attrs)
+  (replace-state init-attrs)
   this)
 
 (defmethod json-schema-object add (e)
@@ -42,13 +42,13 @@
 (declare-lml-component json-schema-object)
 
 
-(fn json-schema-type-props (props)
+(fn expand-type (props)
   (? (string? props)
      {"type" props}
      props))
 
-(fn json-schema (props)
-  (!= (json-schema-type-props props.schema)
+(fn json-schema (attrs)
+  (!= (expand-type attrs.schema)
     ($$ `(,(? (string== "object" !.type)
              'json-schema-object
              'json-schema-type)
