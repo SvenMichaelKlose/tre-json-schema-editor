@@ -1,13 +1,20 @@
 (const *json-schema-basic-types* '("string" "object" "number" "array" "boolean"))
 
-(fn json-schema-title (schema)
-  (!? schema.title
-      (+ "(" ! ")")
-      "(no title)"))
+(defclass  (json-schema-title lml-component) (attrs)
+  (super attrs)
+  this)
+
+(defmethod  json-schema-title render ()
+  ($$ (!? props.schema.title
+          (+ "(" ! ")")
+          "(no title)")))
+
+(finalize-class json-schema-title)
+(declare-lml-component json-schema-title)
 
 (fn json-schema-type (attrs)
   (!= attrs.schema
-    ($$ `(div ,(+ !.type " " (json-schema-title !))))))
+    ($$ `(div ,(+ !.type " ") (json-schema-title :schema ,!)))))
 
 (declare-lml-component json-schema-type)
 
@@ -25,7 +32,7 @@
 (defmethod json-schema-object render ()
   (!= state.schema
     ($$ `(table
-           (tr (th :class "json-schema-typename" :colspan 2 ,(json-schema-title !)))
+           (tr (th :class "json-schema-typename" :colspan 2 (json-schema-title :schema ,!)))
            ,@(maphash #'((k v)  ; TODO: Enable @ to process hash tables and objects.
                           `(tr
                              (td ,(+ k ":"))
