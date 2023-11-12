@@ -11,6 +11,9 @@ variable of a component confusion is guaranteed.  Accordingly
 I'll rename LML-COMPONENT constructor argument to 'attrs'
 while still keeping member variables unnamed.
 
+QUASIQUOTE-SPLICE (',@') now turns JSON objects into keyword/
+value lists to splice them as function and LML arguments.
+
 # 10 NOV 2023
 
 There hasn't been done much for the tré programming language
