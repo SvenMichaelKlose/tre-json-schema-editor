@@ -11,9 +11,7 @@
                    :on-blur     ,[set-state {is_editing nil}]
                    :value       ,(| ! ""))
            `(span :on-click ,[set-state {is_editing t}]
-              ,(? state.is_editing
-                  (+ "(" ! ")")
-                  "(no title)"))))))
+                   ,(+ "(" (| ! "no title") ")"))))))
 
 (finalize-class json-schema-title)
 (declare-lml-component json-schema-title)
