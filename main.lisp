@@ -11,7 +11,7 @@
                    :on-blur     ,[set-state {is_editing nil}]
                    :value       ,(| ! ""))
            `(span :on-click ,[set-state {is_editing t}]
-                   ,(+ "(" (| ! "no title") ")"))))))
+              ,(+ "(" (| ! "no title") ")"))))))
 
 (finalize-class json-schema-title)
 (declare-lml-component json-schema-title)
@@ -83,5 +83,8 @@
 })
 
 (document.body.add ($$ `(json-schema :schema ,*schema*)))
-(document.body.add-event-listener "DOMNodeInserted"
-  [($* "[grabfocus]").map [(_.focus)]] nil)
+
+(!= (new *mutation-observer
+         #'((l o)
+             (($* "[grabfocus]").map [(_.focus)])))
+  (!.observe document.body {"childList" t "subtree" t}))
