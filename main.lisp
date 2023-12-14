@@ -10,6 +10,7 @@
     ($$ (? state.is_editing
            `(input :grab-focus  1
                    :on-blur     ,[set-state {:is_editing nil}]
+                   :on-change   ,[state.parent.update :title (_.target.value)]
                    :value       ,(| ! ""))
            `(span :on-click ,[set-state {:is_editing t}]
               ,(+ "(" (| ! "no title") ")"))))))
@@ -19,7 +20,7 @@
 
 (fn json-schema-type (attrs)
   (!= attrs.schema
-    ($$ `(div ,(+ !.type " ") (json-schema-title :schema ,!)))))
+    ($$ `(div ,!.type (json-schema-title :schema ,!)))))
 
 (declare-lml-component json-schema-type)
 
@@ -28,6 +29,13 @@
   (super init-attrs)
   (replace-state init-attrs)
   this)
+
+(defmethod json-schema-object update (key val)
+  (!= state
+    (let k !.key    ; TODO: Add key expressions for JSON in tré. (pixel)
+      (replace-state (merge {k val} state))
+      (when !.key
+        (!.parent.update !.key !.schema)))))
 
 (defmethod json-schema-object add (e)
   (!= ($? "<.json-add" e.target)
@@ -41,7 +49,7 @@
            ,@(maphash #'((k v)
                           `(tr
                              (td ,(+ k ":"))
-                             (td (json-schema :schema ,v))))
+                             (td (json-schema :schema ,v :key ,k :parent ,this))))
                       !.properties)
            (tr :class "json-add"
              (td (input :type "text"))
@@ -64,22 +72,22 @@
     ($$ `(,(? (string== "object" !.type)
               'json-schema-object
               'json-schema-type)
-          :schema ,!))))
+          :schema ,! :key ,attrs.key))))
 
 (declare-lml-component json-schema)
 
 
 (var *schema* {
-    "type"      "object"
-    "title"     "Test"
-    "properties" {
-        "name"  "string"
-        "surname"  {
-            "type"  "string"
+    :type      "object"
+    :title     "Test"
+    :properties {
+        :name  "string"
+        :surname  {
+            :type  "string"
         }
-        "age"       "number"
-        "is_member" "boolean"
-        "guests"    "array"
+        :age       "number"
+        :is_member "boolean"
+        :guests    "array"
     }
 })
 
