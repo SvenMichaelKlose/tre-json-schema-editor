@@ -7,27 +7,30 @@
      props))
 
 
-(defclass  (json-schema-title lml-component) (init-attrs)
+(defclass (json-schema-title lml-component) (init-attrs)
   (super init-attrs)
-  (set-state (merge {:is_editing nil} init-attrs))
+  (set-state {:is_editing nil})
   this)
 
-(defmethod  json-schema-title render ()
-  (!= state.schema.title
+(defmethod json-schema-title render ()
+  (!= props.schema.title
     ($$ (? state.is_editing
-           `(input :grab-focus  1
+           `(div (input :grab-focus  1
                    :on-blur     ,[set-state {:is_editing nil}]
-                   :on-change   ,[state.parent.update "title" _.target.value]
+                   :on-change   ,[props.parent.update "title" _.target.value]
                    :value       ,(| ! ""))
+                 (button :on-click [$ (_.target).remove]
+                   "X"))
            `(span :on-click ,[set-state {:is_editing t}]
-              ,(+ " (" (| ! "no title") ")"))))))
+              ,(+ "(" (| ! "no title") ")"))))))
 
 (finalize-class json-schema-title)
 (declare-lml-component json-schema-title)
 
+
 (fn json-schema-type (attrs)
   (!= attrs.schema
-    ($$ `(div ,!.type (json-schema-title :schema ,! :parent ,attrs.parent)))))
+    ($$ `(div ,!.type " " (json-schema-title :schema ,! :parent ,attrs.parent)))))
 
 (declare-lml-component json-schema-type)
 
@@ -51,7 +54,8 @@
   (!= state.schema
     ($$ `(table
            (tr
-             (th :class "json-schema-typename" :colspan 2
+             (th :class    "json-schema-typename"
+                 :colspan  2
                "object " (json-schema-title :schema ,! :parent ,this)))
            ,@(maphash #'((k v)
                           `(tr
@@ -71,7 +75,7 @@
 
 (fn json-schema (attrs)
   (!= (expand-type attrs.schema)
-    ($$ `(,(? (string== "object" !.type)
+    ($$ `(,(? (== "object" !.type)
               'json-schema-object
               'json-schema-type)
           :schema ,! :key ,attrs.key :parent ,attrs.parent))))
