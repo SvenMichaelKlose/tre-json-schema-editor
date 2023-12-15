@@ -37,21 +37,20 @@
 
 (defclass (json-schema-object lml-component) (init-attrs)
   (super init-attrs)
-  (replace-state init-attrs)
   this)
 
 (defmethod json-schema-object update (key val)
+  (set-state props)
   (= (ref state.schema.properties key) val)
-  (set-state (new))
   (state.parent.update key state.schema))
 
 (defmethod json-schema-object add (e)
   (!= ($? "<.json-add" e.target)
-    (= (ref state.schema.properties ($? "input" !).value) ($? "select" !).value)
-    (replace-state state)))
+    (set-state props)
+    (= (ref state.schema.properties ($? "input" !).value) ($? "select" !).value)))
 
 (defmethod json-schema-object render ()
-  (!= state.schema
+  (!= props.schema
     ($$ `(table
            (tr
              (th :class    "json-schema-typename"
@@ -120,4 +119,4 @@
 (!= (new *mutation-observer
          #'((l o)
              (($* "[grabfocus]").map [(_.focus)])))
-  (!.observe document.body {"childList" t "subtree" t}))
+  (!.observe document.body {:childList t :subtree t}))
