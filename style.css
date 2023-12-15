@@ -9,9 +9,15 @@ h1 {
 
 table {
     border-collapse: collapse;
+    border: 1px solid black;
+}
+
+tr:nth-child(even) {
+    background: #eee;
 }
 
 th, td {
+    padding: 3px;
     text-align: left;
 }
 
