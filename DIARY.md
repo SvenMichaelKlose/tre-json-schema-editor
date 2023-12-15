@@ -3,6 +3,16 @@ Development diary
 
 Sven Michael Klose <pixel@hugbox.org>
 
+# 15 DEC 2023 21:07
+
+Am thinking about turning the schema nodes into objects
+that behave like database records and can update their
+origins independently from the LML components.  That brings
+the thing back to the already existing STORE objects.  The
+latter should perhaps not be "connected" to the
+LML-COMPONENTs that use them – there must have been some
+confusion.  Accordingly I'll redo that from scratch.
+
 # 15 DEC 2023
 
 TRE symbol case will remain for the duration and there will
