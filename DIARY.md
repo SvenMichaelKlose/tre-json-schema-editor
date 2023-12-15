@@ -3,6 +3,12 @@ Development diary
 
 Sven Michael Klose <pixel@hugbox.org>
 
+# 15 DEC 2023
+
+TRE symbol case will remain for the duration and there will
+be no literal JSON splicing syntax.  Would love to see
+overloading REF for JSON objects.
+
 # 11 NOV 2023
 
 React has renamed DOM attributes to 'properties', the items
