@@ -1,6 +1,11 @@
 (const *json-schema-basic-types* '("string" "object" "number" "array" "boolean"))
 
 
+(!= (new *mutation-observer
+         #'((l o)
+             (($* "[grabfocus]").map [(_.focus)])))
+  (!.observe document.body {:child-list t :subtree t}))
+
 (fn expand-type (props)
   (? (string? props)
      {:type props}
@@ -66,7 +71,7 @@
              (td
                (select ,@(@ [`(option :value ,_ ,_)]
                             *json-schema-basic-types*))
-               (button "+" :on-click ,[add _])))))))
+               (button :on-click ,[add _] "+")))))))
 
 (finalize-class json-schema-object)
 (declare-lml-component json-schema-object)
@@ -111,12 +116,6 @@
     }
 })
 
-(fn writer (x)
-  (dump x "Updated JSON"))
-
-(document.body.add ($$ `(json-schema-container :schema ,*schema* :writer ,writer)))
-
-(!= (new *mutation-observer
-         #'((l o)
-             (($* "[grabfocus]").map [(_.focus)])))
-  (!.observe document.body {:childList t :subtree t}))
+(document.body.add ($$ `(json-schema-container
+                          :schema ,*schema*
+                          :writer ,[dump _ "Updated JSON"])))
