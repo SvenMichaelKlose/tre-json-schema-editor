@@ -3,6 +3,18 @@ Development diary
 
 Sven Michael Klose <pixel@hugbox.org>
 
+# 16 DEC 2023 14:02
+
+Aside from Lisp symbols being upper cased by default there
+is another thing messing up the mix: 'false'.  There is no
+boolean FALSE in Common LISP.  And no other Lisp dialect
+I know of yet.  So predicate NOT will return T for both
+NIL and FALSE.   An (EQ X NIL) is in order to check for
+NIL.
+
+However: the autoform section will require an update to
+JSON Schema, not that ancient proprietary one.
+
 # 15 DEC 2023 21:07
 
 Am thinking about turning the schema nodes into objects
@@ -12,6 +24,9 @@ the thing back to the already existing STORE objects.  The
 latter should perhaps not be "connected" to the
 LML-COMPONENTs that use them – there must have been some
 confusion.  Accordingly I'll redo that from scratch.
+
+It finally came to me what I really want: an editor with
+the schema editor integrated alongside.
 
 # 15 DEC 2023
 
