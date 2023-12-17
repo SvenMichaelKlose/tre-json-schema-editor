@@ -10,6 +10,6 @@
   :internal-stylesheet
     (fetch-file "style.css")
   :files
-    '("main.lisp"))
+    '("toplevel.lisp"))
 
 (quit)
