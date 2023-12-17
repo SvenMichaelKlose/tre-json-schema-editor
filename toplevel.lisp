@@ -58,12 +58,11 @@
   (!= props.schema
     ($$ `(table
            (tr
-             (th :class    "json-schema-typename"
-                 :colspan  2
+             (th :class "json-schema-typename"
                "object " (json-schema-title :schema ,! :parent ,this)))
            ,@(maphash #'((k v)
                           `(tr
-                             (td ,(+ k ":"))
+                             (td ,k)
                              (td (json-schema :schema ,v :key ,k :parent ,this))))
                       !.properties)
            (tr :class "json-add"
@@ -117,5 +116,5 @@
 })
 
 (document.body.add ($$ `(json-schema-container
-                          :schema ,*schema*
-                          :writer ,[dump _ "Updated JSON"])))
+                            :schema ,*schema*
+                            :writer ,[dump _ "Updated JSON"])))
