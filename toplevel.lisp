@@ -12,8 +12,8 @@
      props))
 
 
-(defclass (json-schema-title lml-component) (init-attrs)
-  (super init-attrs)
+(defclass (json-schema-title lml-component) (attrs)
+  (super attrs)
   (set-state {:is_editing nil})
   this)
 
@@ -40,8 +40,8 @@
 (declare-lml-component json-schema-type)
 
 
-(defclass (json-schema-object lml-component) (init-attrs)
-  (super init-attrs)
+(defclass (json-schema-object lml-component) (attrs)
+  (super attrs)
   this)
 
 (defmethod json-schema-object update (key val)
@@ -86,8 +86,8 @@
 (declare-lml-component json-schema)
 
 
-(defclass (json-schema-container lml-component) (init-attrs)
-  (super init-attrs)
+(defclass (json-schema-container lml-component) (attrs)
+  (super attrs)
   this)
 
 (defmethod json-schema-container update (dummy-key value)
