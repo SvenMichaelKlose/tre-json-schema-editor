@@ -78,7 +78,7 @@
 
 (fn json-schema (attrs)
   (!= (expand-type attrs.schema)
-    ($$ `(,(? (== "object" !.type)
+    ($$ `(,(? (eql "object" !.type)
               'json-schema-object
               'json-schema-type)
           :schema ,! :key ,attrs.key :parent ,attrs.parent))))
@@ -105,9 +105,13 @@
     :type      "object"
     :title     "Test"
     :properties {
-        :name  "string"
-        :surname  {
+        :name {
             :type  "string"
+            :title "Name"
+        }
+        :surname {
+            :type  "string"
+            :title "Surame"
         }
         :age       "number"
         :is_member "boolean"
@@ -115,6 +119,21 @@
     }
 })
 
-(document.body.add ($$ `(json-schema-container
-                            :schema ,*schema*
-                            :writer ,[dump _ "Updated JSON"])))
+(var *data* {
+    :name       "Sixpack"
+    :surname    "Joe"
+    :age        39
+    :is_member  false
+    :guests     nil
+})
+
+(document.body.add
+  ($$
+    `(autoform-record
+         :schema  ,*schema*
+         :store   ,(new store *data*)
+         :fields  ("surname" "name" "age"))))
+
+;(document.body.add ($$ `(json-schema-container
+;                            :schema ,*schema*
+;                            :writer ,[dump _ "Updated JSON"])))
