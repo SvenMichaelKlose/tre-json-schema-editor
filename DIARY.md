@@ -3,6 +3,32 @@ Development diary
 
 Sven Michael Klose <pixel@hugbox.org>
 
+# 10 JAN 2024 19:20
+
+Trying to illuminate this with some hands-on example.
+
+# 19 DEC 2023 07:50
+
+We have four names for keys in our associative arrays
+depending on where they reside:
+
+key
+: Key of an associative array.
+
+attribute
+: Name of a key value pair in a DOM element.
+
+property
+: Name of an item in a JSON object.
+
+column
+: Field name of a record in a table.
+
+That's why the argument name of a LML component constructor
+is not PROPS (like in React) but ATTRS.  But an Object
+Relation Mapper to the rescue and the term "column" will be
+hidden away well.
+
 # 16 DEC 2023 14:02
 
 Aside from Lisp symbols being upper cased by default there
